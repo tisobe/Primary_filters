@@ -1,0 +1,76 @@
+
++++++++++++++++++++
+RDB Data Filtering
++++++++++++++++++++
+
+This directory holds scripts which extract OTG and CCDM related data
+from dump data (*Dump_EM_*)
+
+--------
+Scripts
+--------
+filters_wrap_script     ---- setting environments
+filters_main_script     ---- main script to run python, perl, and other scripts
+
+run_filter_scripts.py   ---- python script to copy unprocessed data from /dsops/GOT/input/
+                             and run a couple of acorn processes to create filtered data
+
+otg_proc.pl             ---- create OTG tracelogs and run gratstat.pl and cleano.pl
+
+gratstat.pl             ---- analyze OTG move
+
+cleano.pl               ---- clean up OTG move summary file and create summary plots
+
+---------------------
+Environment Settings
+---------------------
+
+setascds
+
+setenv ASCDS_CONFIG_MTA_DATA "/home/ascds/DS.release/config/mta/data"
+setenv IPCL_DIR "/home/ascds/DS.release/config/tp_template/P011/"
+setenv ACORN_GUI "/home/ascds/DS.release/config/mta/acorn/scripts/"
+setenv LD_LIBRARY_PATH "/home/ascds/DS.release/lib:/home/ascds/DS.release/ots/lib:/soft/SYBASE_OSRV15.5/OCS-15_0/lib:/home/ascds/DS.release/otslib:/opt/X11R6/lib:/usr/lib64/alliance/lib"
+
+python script must be able to see /proj/sot/ska/bin/python
+
+
+-----------
+Data Needed
+-----------
+
+/dsops/GOT/input/*Dump_EM_*                                 ---- main data which the scripts extract filtered data
+/data/mta/Script/Dumps/Scripts/hosue_keepnig/otg-msids.list ---- acorn filter setting for OTG
+/data/mta/Script/Dumps/Scripts/hosue_keepnig/msids.list     ---- acorn filter setting for CCDM
+/data/mta/Script/Dumps/Scripts/hosue_keepnig/processed_list ---- previously analyzed data list
+
+
+------
+Output
+------
+/data/mta/Script/Dumps/
+
+ELBILOW_<>.<>.tl
+ELBILOW_<>.<>.tl
+MUPSMUPS1_<>.<>.tl
+MUPSMUPS2_<>.<>.tl
+PRIMARYCCDM_<>.<>.tl
+PRIMARYPCAD_<>.<>.tl
+PRIMARYIRU_<>.<>.tl
+PRIMARYACIS_<>.<>.tl
+PRIMARYACIS_STAT_<>.<>.tl
+PRIMARYEPHIN_<>.<>.tl
+
+gratstat.lis
+
+
+/data/mta/Script/Dumps/OTG/TLsave/
+
+PRIMARYOTG_<>.<>.tl
+
+
+--------
+Cron Job
+--------
+14 1 * * *  cd /data/mta/Script/Dumps/Scripts/; /data/mta/Script/Dumps/Scripts/filters_wrap_script >> $HOME/Logs/filters_otg.cron 2>&1
+
