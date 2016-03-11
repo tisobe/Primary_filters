@@ -6,7 +6,7 @@
 #                                                                                           #
 #               author: t. isobe (tisobe@cfa.harvard.edu)                                   #
 #                                                                                           #
-#               last update: Jun 08, 2015                                                   #
+#               last update: Oct 02, 2015                                                   #
 #                                                                                           #
 #############################################################################################
 
@@ -67,6 +67,7 @@ def run_filter_script():
 
     filters_otg(unprocessed_data)
     filters_ccdm(unprocessed_data)
+    filters_sim(unprocessed_data)
 
 #-----------------------------------------------------------------------------------------------------------
 #-- filters_otg: run acorn for otg filter                                                                ---
@@ -105,6 +106,26 @@ def filters_ccdm(unprocessed_data):
             bash(cmd, env=ascdsenv)
         except:
             pass
+
+#-----------------------------------------------------------------------------------------------------------
+#-- filters_sim: run acorn for sim filter                                                                 --
+#-----------------------------------------------------------------------------------------------------------
+
+def filters_sim(unprocessed_data):
+    """
+    run acorn for sim filter
+    input: unprocessed_data    --- list of data
+    output: various *.tl files
+    """
+
+    for ent in unprocessed_data:
+        cmd = '/home/ascds/DS.release/bin/acorn -nOC msids_sim.list -f ' + ent
+        try:
+            #os.system(cmd)
+            bash(cmd, env=ascdsenv)
+        except:
+            pass
+
 
 #-----------------------------------------------------------------------------------------------------------
 #-- copy_unprocessed_dump_em_files: collect unporcessed data and make a list                             ---
@@ -173,6 +194,15 @@ def copy_unprocessed_dump_em_files():
             except:
                 pass
 
+    fo.close()
+#
+#--- write out today dump data list
+#
+    outfile = main_dir + 'Scripts/house_keeping/today_dump_files'
+    fo      = open(outfile, 'w')
+    for ent in unprocessed_data:
+        fo.write(ent)
+        fo.write('\n')
     fo.close()
 
     return unprocessed_data

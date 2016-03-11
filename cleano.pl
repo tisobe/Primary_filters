@@ -9,7 +9,7 @@ use PGPLOT;
 #                        B. Spitzbart (bspitzbart@cfa.harvard.edu)                                      #
 #               modified by: t. isobe (tisobe@cfa.harvard.edu)                                          #
 #                                                                                                       #
-#               Last update:    Mar 09, 2015                                                            #
+#               Last update:    Nov 19, 2015                                                            #
 #                                                                                                       #
 #########################################################################################################
 
@@ -329,16 +329,24 @@ sub sum_file {
     print OUT "<body>\n";
 
     while ($line = <IN>) {
+        if ($line =~ /PGPLOT/){
+            next;
+        }
         if ($line =~ /^\*/) {
             $save = $line;
+            $chk  = 0;
+        }
+        if ($line =~ /No OTG moves found/) { next; }
 
-            if ($line =~ /No OTG moves found/) { next; }
+        if($chk == 0){
+            $save = $save.$line."<br />";
 
-            $label = substr($line, index($line, "at") + 3, 16);
-
-            print OUT "<a name=$label>\n";
-            print OUT $save.$line."<br />";
-
+            if($line =~ /Move started at/){
+                $label = substr($line, index($line, "at") + 3, 16);
+                print OUT "<a name=$label>\n";
+                print OUT $save.$line."<br />";
+                $chk = 1;
+            }
         } else {
             print OUT "$line<br />";
         }

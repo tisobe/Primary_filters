@@ -6,10 +6,7 @@ setenv IPCL_DIR "/home/ascds/DS.release/config/tp_template/P011/"
 setenv ACORN_GUI "/home/ascds/DS.release/config/mta/acorn/scripts/"
 setenv LD_LIBRARY_PATH "/home/ascds/DS.release/lib:/home/ascds/DS.release/ots/lib:/soft/SYBASE_OSRV15.5/OCS-15_0/lib:/home/ascds/DS.release/otslib:/opt/X11R6/lib:/usr/lib64/alliance/lib"
 
-
-mv -f ./systemlog ./house_keeping/.
-
-mv -f *.tl /data/mta/Script/Dumps/ 
+perl ./mv_files.perl
 
 /data/mta/Script/Dumps/Scripts/otg_proc.pl
 
@@ -17,6 +14,4 @@ mv -f *.tl /data/mta/Script/Dumps/
 
 rm -rf *Dump_EM*
 
-cat ./gratstat.lis >> /data/mta/Script/Dumps/gratstat.lis
-
-rm -f ./gratstat.in.tl  ./gratstat.lis ./otg-msids.list ./msids.list
+perl ./otg_cleanup.perl
