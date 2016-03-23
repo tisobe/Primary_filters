@@ -6,7 +6,7 @@
 #                                                                                           #
 #               author: t. isobe (tisobe@cfa.harvard.edu)                                   #
 #                                                                                           #
-#               last update: Oct 02, 2015                                                   #
+#               last update: Mar 23, 2016                                                   #
 #                                                                                           #
 #############################################################################################
 
@@ -146,7 +146,12 @@ def copy_unprocessed_dump_em_files():
     plist = [line.strip() for line in f.readlines()]
     f.close()
 
-    last_entry = plist[-1]
+#---- ADDED 03/23/16 ------
+    if len(plist) < 1:
+        return []
+#---- ADDED 03/23/16 END ------
+
+    last_entry = plist[len(plist)-1]
 #
 #--- read the all dump data located in /dsops/GOT/* sites
 #
